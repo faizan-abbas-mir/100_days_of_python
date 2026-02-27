@@ -6,7 +6,7 @@
 4. delete a patient profile
 5. view all profies
 """
-from fastapi import FastAPI
+from fastapi import FastAPI,Path
 import json
 
 app=FastAPI()
@@ -28,3 +28,10 @@ def  about():
 def view():
     data=load_data()
     return data
+
+@app.get("/patient/{patient_id}")
+def view_patient(patient_id:str = Path(...,description="enter the patient id of the patient whose details you want to see",example="P002")):
+    data=load_data()
+    if patient_id in data:
+        return data[patient_id]
+    return{"error":"patient not found"}
