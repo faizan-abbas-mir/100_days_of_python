@@ -23,7 +23,7 @@ def insert_patient_data(patient:Patient):
 
     print("inserted")
 
-patient_info= {'name':'nitish', 'age':30, 'email':'faizanmirmail.com','url':"http://www.danzanchus.com"  ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango'} }
+patient_info= {'name':'nitish', 'age':30, 'email':'faizanmir@gmail.com','url':"http://www.danzanchus.com"  ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango'} }
 
 patient1= Patient(**patient_info)
 
