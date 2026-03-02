@@ -1,15 +1,15 @@
 "used for data validation and serialization. it allows us to define data models using python classes and provides automatic validation and parsing of incoming data. it also supports features like type hints, default values, and custom validation logic"
-from pydantic import BaseModel,EmailStr,AnyUrl
-from typing import List,Dict,Optional
+from pydantic import BaseModel,EmailStr,AnyUrl,Field
+from typing import List,Dict,Optional,Annotated
 
 class Patient(BaseModel):
-    name: str
+    name: Annotated[str, Field(max_length=50, description='name in less than 50 chars',title='name of the patient')]
     age: int
     email: EmailStr
     url: AnyUrl
-    weight: float
+    weight: float=Field(gt=0 , lt =200)
     married: bool
-    allergies:Optional[List[str]]= None
+    allergies:Optional[List[str]]=  Field( max_length=5)
     contact: Dict[str,str]=None
 
 def insert_patient_data(patient:Patient):
