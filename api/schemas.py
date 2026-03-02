@@ -1,5 +1,5 @@
 "used for data validation and serialization. it allows us to define data models using python classes and provides automatic validation and parsing of incoming data. it also supports features like type hints, default values, and custom validation logic"
-from pydantic import BaseModel,EmailStr,AnyUrl,Field
+from pydantic import BaseModel,EmailStr,AnyUrl,Field,field_validator
 from typing import List,Dict,Optional,Annotated
 
 class Patient(BaseModel):
@@ -9,8 +9,23 @@ class Patient(BaseModel):
     url: AnyUrl
     weight: float=Field(gt=0 , lt =200)
     married: bool
-    allergies:Optional[List[str]]=  Field( max_length=5)
-    contact: Dict[str,str]=None
+    allergies:Optional[List[str]]=  Field(default=None, max_length=5)
+    contact: Dict[
+        str,str]=None
+    @field_validator('email')
+    @classmethod
+    def email_validator(cls,value):
+        valid_domails="hdfc.com"
+        domain_name=value.split('@')[-1]
+        if domain_name not in valid_domails:
+            raise ValueError('not a valid domain')
+        return value
+    @field_validator('name')
+    @classmethod
+    def name_transform(cls,value):
+        value=value.upper()
+        return value
+
 
 def insert_patient_data(patient:Patient):
     print(patient.name)
@@ -23,7 +38,7 @@ def insert_patient_data(patient:Patient):
 
     print("inserted")
 
-patient_info= {'name':'nitish', 'age':30, 'email':'faizanmir@gmail.com','url':"http://www.danzanchus.com"  ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango'} }
+patient_info= {'name':'nitish', 'age':30, 'email':'faizanmir@hdfc.com','url':"http://www.danzanchus.com"  ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango'} }
 
 patient1= Patient(**patient_info)
 
