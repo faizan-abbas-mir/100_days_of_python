@@ -1,14 +1,14 @@
 "used for data validation and serialization. it allows us to define data models using python classes and provides automatic validation and parsing of incoming data. it also supports features like type hints, default values, and custom validation logic"
 from pydantic import BaseModel
-from typing import List,Dict
+from typing import List,Dict,Optional
 
 class Patient(BaseModel):
     name: str
     age: int
     weight: float
     married: bool
-    allergies:List[str]
-    contact: Dict[str,str]
+    allergies:Optional[List[str]]= None
+    contact: Dict[str,str]=None
 
 def insert_patient_data(patient:Patient):
     print(patient.name)
