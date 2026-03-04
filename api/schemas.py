@@ -1,5 +1,5 @@
 "used for data validation and serialization. it allows us to define data models using python classes and provides automatic validation and parsing of incoming data. it also supports features like type hints, default values, and custom validation logic"
-from pydantic import BaseModel,EmailStr,AnyUrl,Field,field_validator
+from pydantic import BaseModel,EmailStr,AnyUrl,Field,field_validator,model_validator
 from typing import List,Dict,Optional,Annotated
 
 class Patient(BaseModel):
@@ -26,6 +26,12 @@ class Patient(BaseModel):
         value=value.upper()
         return value
 
+    @model_validator(mode='after')
+    def validate_emergency_contact(cls,model):
+        if model.age>60 and 'emergency' not in model.contact:
+            raise ValueError(" patients above 60 add emergency details")
+        return model
+
 
 def insert_patient_data(patient:Patient):
     print(patient.name)
@@ -38,7 +44,7 @@ def insert_patient_data(patient:Patient):
 
     print("inserted")
 
-patient_info= {'name':'nitish', 'age':30, 'email':'faizanmir@hdfc.com','url':"http://www.danzanchus.com"  ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango'} }
+patient_info= {'name':'nitish', 'age':61, 'email':'faizanmir@hdfc.com','url':"http://www.danzanchus.com"  ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango', 'emergency':'ddd'} }
 
 patient1= Patient(**patient_info)
 
