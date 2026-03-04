@@ -1,5 +1,5 @@
 "used for data validation and serialization. it allows us to define data models using python classes and provides automatic validation and parsing of incoming data. it also supports features like type hints, default values, and custom validation logic"
-from pydantic import BaseModel,EmailStr,AnyUrl,Field,field_validator,model_validator
+from pydantic import BaseModel,EmailStr,AnyUrl,Field,field_validator,model_validator,computed_field
 from typing import List,Dict,Optional,Annotated
 
 class Patient(BaseModel):
@@ -7,11 +7,12 @@ class Patient(BaseModel):
     age: int
     email: EmailStr
     url: AnyUrl
+    height: float=Field(gt=0 )
     weight: float=Field(gt=0 , lt =200)
     married: bool
     allergies:Optional[List[str]]=  Field(default=None, max_length=5)
-    contact: Dict[
-        str,str]=None
+    contact: Dict[str,str]=None
+
     @field_validator('email')
     @classmethod
     def email_validator(cls,value):
@@ -20,6 +21,7 @@ class Patient(BaseModel):
         if domain_name not in valid_domails:
             raise ValueError('not a valid domain')
         return value
+    
     @field_validator('name')
     @classmethod
     def name_transform(cls,value):
@@ -31,7 +33,11 @@ class Patient(BaseModel):
         if model.age>60 and 'emergency' not in model.contact:
             raise ValueError(" patients above 60 add emergency details")
         return model
-
+    @computed_field
+    @property
+    def bmi(self)-> float:
+        bmi=round(self.weight/(self.height/100)**2)
+        return bmi
 
 def insert_patient_data(patient:Patient):
     print(patient.name)
@@ -43,10 +49,22 @@ def insert_patient_data(patient:Patient):
     print(patient.contact)
 
     print("inserted")
+def update_patient_data(patient:Patient):
+    print(patient.name)
+    print(patient.age)
+    print(patient.email)
+    print(patient.url)
+    print(patient.bmi)
+    print(patient.weight)
+    print(patient.married)
+    print(patient.contact)
 
-patient_info= {'name':'nitish', 'age':61, 'email':'faizanmir@hdfc.com','url':"http://www.danzanchus.com"  ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango', 'emergency':'ddd'} }
+    print("inserted")
+
+patient_info= {'name':'nitish', 'age':61, 'email':'faizanmir@hdfc.com','url':"http://www.danzanchus.com" ,'height':'185' ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango', 'emergency':'ddd'} }
 
 patient1= Patient(**patient_info)
 
 insert_patient_data(patient1)
+update_patient_data(patient1)
 
