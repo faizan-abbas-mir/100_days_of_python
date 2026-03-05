@@ -79,7 +79,10 @@ address1=address(**address_dict)
 patient_info= {'name':'nitish', 'age':61, 'email':'faizanmir@hdfc.com','address':address1,'url':"http://www.danzanchus.com" ,'height':'185' ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango', 'emergency':'ddd'} }
 patient1= Patient(**patient_info)
 
-insert_patient_data(patient1)
+"""insert_patient_data(patient1)
 update_patient_data(patient1)
 fetch_address(patient1)
-print(patient1.address.pin)
+print(patient1.address.pin)"""
+
+temp=patient1.model_dump_json(include=['address'])
+print(temp)
