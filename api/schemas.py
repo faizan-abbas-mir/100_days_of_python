@@ -2,11 +2,18 @@
 from pydantic import BaseModel,EmailStr,AnyUrl,Field,field_validator,model_validator,computed_field
 from typing import List,Dict,Optional,Annotated
 
+class address(BaseModel):
+    city: str
+    state: str
+    pin: int
+    
+
 class Patient(BaseModel):
     name: Annotated[str, Field(max_length=50, description='name in less than 50 chars',title='name of the patient')]
     age: int
     email: EmailStr
-    url: AnyUrl
+    address:address
+    url: Optional[AnyUrl]
     height: float=Field(gt=0 )
     weight: float=Field(gt=0 , lt =200)
     married: bool
@@ -61,10 +68,18 @@ def update_patient_data(patient:Patient):
 
     print("inserted")
 
-patient_info= {'name':'nitish', 'age':61, 'email':'faizanmir@hdfc.com','url':"http://www.danzanchus.com" ,'height':'185' ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango', 'emergency':'ddd'} }
+def fetch_address(patient:Patient):
+    print(patient.address)
 
+
+
+address_dict={'city':'gurugram','state':'haryana','pin':110011}
+address1=address(**address_dict)
+
+patient_info= {'name':'nitish', 'age':61, 'email':'faizanmir@hdfc.com','address':address1,'url':"http://www.danzanchus.com" ,'height':'185' ,'weight':70.1, 'married':False, 'allergies':['pollen','presewrvatives'], 'contact':{'fateher':'apple', 'mother':'mango', 'emergency':'ddd'} }
 patient1= Patient(**patient_info)
 
 insert_patient_data(patient1)
 update_patient_data(patient1)
-
+fetch_address(patient1)
+print(patient1.address.pin)
