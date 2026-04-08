@@ -45,6 +45,16 @@ class Patient(BaseModel):
     def bmi(self)-> float:
         bmi=round(self.weight/(self.height/100)**2)
         return bmi
+    @computed_field
+    @property
+    def verdict(bmi)->str:
+        if bmi>25:
+            verdict="Obese"
+        elif bmi<23:
+            verdict="weak"
+        else:
+            verdict="normal"
+        return verdict
 
 def insert_patient_data(patient:Patient):
     print(patient.name)
@@ -65,7 +75,7 @@ def update_patient_data(patient:Patient):
     print(patient.weight)
     print(patient.married)
     print(patient.contact)
-
+    print(patient.verdict)
     print("inserted")
 
 def fetch_address(patient:Patient):
@@ -86,3 +96,4 @@ print(patient1.address.pin)"""
 
 temp=patient1.model_dump_json(include=['address'])
 print(temp)
+update_patient_data(patient1)

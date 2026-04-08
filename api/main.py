@@ -8,6 +8,7 @@
 """
 from fastapi import FastAPI,Path,HTTPException,Query
 import json
+from schemas import Patient
 
 app=FastAPI()
 
@@ -30,7 +31,7 @@ def view():
     return data
 
 @app.get("/patient/{patient_id}")
-def view_patient(patient_id:str = Path(...,description="enter the patient id of the patient whose details you want to see",example="P002")):
+def view_patient(patient_id:str = Path(...,description="enter the patient id of the patient whose details you want to see",examples="P002")):
     data=load_data()
     if patient_id in data:
         return data[patient_id]
@@ -38,7 +39,7 @@ def view_patient(patient_id:str = Path(...,description="enter the patient id of 
 
 """query parameter are optional and endpoint can be used without them as well. they are seperated by &"""
 
-@app.get("/sorte")
+@app.get("/sort")
 def sort_patient(sort_by: str =Query(..., description="sort on the basis of height,weight,bmi"), order:str =Query("asc" ,description="order of sorting")):
     valid_fields=["height","weight","bmi"]
     if sort_by not in valid_fields:
@@ -52,3 +53,6 @@ def sort_patient(sort_by: str =Query(..., description="sort on the basis of heig
     return sorted_data
 
 
+@app.post("/register")
+def register_patient(patient:Patient):
+    pass
