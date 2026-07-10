@@ -47,8 +47,8 @@ class Patient(BaseModel):
         return bmi
     @computed_field
     @property
-    def verdict(bmi)->str:
-        if bmi>25:
+    def verdict(self)->str:
+        if self.bmi>25:
             verdict="Obese"
         elif bmi<23:
             verdict="weak"
