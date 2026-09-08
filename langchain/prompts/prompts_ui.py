@@ -1,5 +1,5 @@
 from langchain_openai import ChatOpenAI
-from langchain_core.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate, load_prompt
 from dotenv import load_dotenv
 
 
@@ -26,6 +26,9 @@ template=PromptTemplate(
 input_variables=["input"]
 
 )
+new_template=load_prompt('template.json')
+
+
 PROMPT=template.invoke({"input": user_input})
 result=model.invoke(PROMPT)
 st.write(result.content)
