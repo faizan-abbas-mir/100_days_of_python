@@ -1,11 +1,11 @@
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
-from typing import TypedDict
+from typing import TypedDict,Annotated
 
 load_dotenv()
 
 class Review(TypedDict):
-    summary:str
+    summary:Annotated[str,"a brief summary of the review"]
     sentiment:str
 
 
