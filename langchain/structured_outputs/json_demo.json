@@ -1,0 +1,30 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+    "title":"student",
+    "description":"name of the student",
+    "type":"objects",
+    "properties":{
+        "name":"string",
+        "age":"int",
+        "pros":"string",
+        "cons":"string"
+
+    }
+
+
+}
+
