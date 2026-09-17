@@ -24,6 +24,6 @@ template=PromptTemplate(
 
 prompt=template.format()
 print(prompt)
-result=model.invoke(prompt)
-parsedresult=parser.parse(result.content)
-print(parsedresult)
+chain = template | model | parser 
+result=chain.invoke({})
+print(result)
