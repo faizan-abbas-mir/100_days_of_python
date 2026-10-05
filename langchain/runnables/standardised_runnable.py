@@ -65,3 +65,18 @@ chain=Runableconnector([template,llm,parser])
 result=chain.invoke( {'topic':'tajmahal','length':'long'} )
 
 print(result)
+
+
+new_template1=NaklipromptTemplate(
+    template='write a joke abot the topic{topic}',
+    input_variable=['topic']
+)
+
+new_template2=NaklipromptTemplate(
+    template='explain the joke \n {response}',
+    input_variable=['response']
+)
+joke_chain=Runableconnector([new_template1,llm,new_template2,llm,parser])
+
+result=joke_chain.invoke({'topic':'monkey'})
+print(result)
