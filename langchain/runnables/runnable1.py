@@ -12,11 +12,6 @@ class Naklillm:
         return {"response": random.choice(response_list)}
 
 
-
-
-
-
-
 class NaklipromptTemplate:
     def __init__(self,template,input_variable):
         self.template=template
@@ -33,10 +28,32 @@ template=NaklipromptTemplate(
 
 )
 
-
-prompt=template.format({'topic':'india','length':'short'})
-
 model=Naklillm()
+
+
+"""prompt=template.format({'topic':'india','length':'short'})
 print(prompt)
-resut=model.predict(prompt)
-print(resut)
+
+
+result=model.predict(prompt)
+print(result)"""
+
+
+
+class Naklillmchain:
+    def __init__(self,prompt,llm):
+        self.llm=llm
+        self.prompt=prompt
+
+    def run(self,input_dict):
+       final_prompt= self.prompt.format(input_dict)
+       print({'final prompt':final_prompt})
+       result=self.llm.predict(final_prompt)
+
+
+       return result['response']
+
+
+chain=Naklillmchain(template,model)
+
+print(chain.run({'length':'short','topic':'tajmahal'}))
