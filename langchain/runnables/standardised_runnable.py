@@ -35,6 +35,7 @@ class NaklipromptTemplate(Runnable):
 
     def invoke(self,input_dict):
          return self.template.format(**input_dict)
+    
 
 class Runableconnector(Runnable):
     def __init__(self,runnable_list):
@@ -46,16 +47,21 @@ class Runableconnector(Runnable):
         return input_data
 
 
+class Stroutputparser(Runnable):
+    def __init__(self):
+        pass
+    def invoke(self,input_data):
+        return input_data['response'].upper()
 
 
 llm=Naklillm()
 template=NaklipromptTemplate(
-   template="write a poem about {topic}",
+   template="write a {length} poem about {topic}",
     input_variable=['topic']
 )
+parser=Stroutputparser()
+chain=Runableconnector([template,llm,parser])
 
-chain=Runableconnector([template,llm])
-
-result=chain.invoke( {'topic':'tajmahal'} )
+result=chain.invoke( {'topic':'tajmahal','length':'long'} )
 
 print(result)
