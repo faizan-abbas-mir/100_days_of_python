@@ -1,7 +1,8 @@
-from langchain_community.document_loaders import PyPDFLoader,DirectoryLoader
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,22 +17,16 @@ llm = HuggingFaceEndpoint(
 model=ChatHuggingFace(llm=llm)
 parser=StrOutputParser()
 
-
-loader=DirectoryLoader(
-    path="books",
-    glob='*.pdf',
-    loader_cls=PyPDFLoader
-)
-
-docs=loader.load()
-print(len(docs))
+url='https://www.flipkart.com'
+loader=WebBaseLoader(url)
+page=loader.load()
 
 prompt=PromptTemplate(
-    template='what is the name of the files given to you{text}',
+    template='read the content of the html page \n{text}',
     input_variables=['text']
 )
 
-chain= prompt | model |parser
+chain=prompt |model |parser
 
-result=chain.invoke(docs)
+result=chain.invoke(page)
 print(result)
