@@ -2,6 +2,7 @@ from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser,JsonOutputParser
 from dotenv import load_dotenv
+from langchain.output_parsers import StructuredOutputParser,ResponseSchema
 
 load_dotenv()
 
@@ -17,4 +18,4 @@ parser=JsonOutputParser()
 template=PromptTemplate(
     template="give me the capitals of 5 counties \n {format_instruction}",
     input_variables=[],
-    partial_variables={'format_instruction':parser.get_format_instructions()}
+    partial_variables={'format_instruction':parser.get_format_instructions()})
