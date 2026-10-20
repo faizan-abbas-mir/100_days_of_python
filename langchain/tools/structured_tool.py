@@ -13,6 +13,7 @@ def multiply_func(a,b):
 
 multiply_tool=StructuredTool.from_function(
     func=multiply_func,
+    description='multiply the 2 numbers',
     args_schema=Multiplyinput
 )
 
