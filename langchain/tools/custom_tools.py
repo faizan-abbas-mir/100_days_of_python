@@ -12,4 +12,16 @@ print(result)
 
 #using structured tool and pydantic
 
- 
+@tool
+def add(a,b):
+    return a+b
+
+
+class Mathtoolkit:
+    def get_tools(self):
+        return[add,multiply]
+
+
+toolkit=Mathtoolkit()
+tools=toolkit.get_tools()
+   
